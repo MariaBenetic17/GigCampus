@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="footer">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <!-- Brand & Mission -->
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="d-inline-flex align-items-center justify-content-center text-white rounded-3 px-2 py-1 fs-5 fw-bold" style="background-color: var(--gc-blue-accent);">GC</span>
+                    <span class="fs-4 fw-bold text-white">Gig<span style="color: var(--gc-blue-accent);">Campus</span></span>
+                </div>
+                <p class="text-light opacity-75 small mb-3">
+                    "Local Businesses. Student Talent. Real Opportunities."
+                </p>
+                <p class="small text-light opacity-75">
+                    Connecting local MSMEs, retail stores, textile merchants, and workshops in Erode, Tamil Nadu with skilled college students for digital services.
+                </p>
+                <div class="d-flex gap-3 text-light opacity-75 fs-5 mt-2">
+                    <span title="Erode, Tamil Nadu, India"><i class="bi bi-geo-alt text-primary" style="color: var(--gc-blue-accent) !important;"></i> Erode District, TN</span>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6>Explore</h6>
+                <ul class="list-unstyled d-flex flex-column gap-2 small">
+                    <li><a th:href="@{/gigs}">Browse All Gigs</a></li>
+                    <li><a th:href="@{/how-it-works}">How It Works</a></li>
+                    <li><a th:href="@{/about}">About Us</a></li>
+                    <li><a th:href="@{/contact}">Help & Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Marketplace Roles -->
+            <div class="col-lg-3 col-md-6 col-6">
+                <h6>Get Started</h6>
+                <ul class="list-unstyled d-flex flex-column gap-2 small">
+                    <li><a th:href="@{/register/student}">Join as Student Freelancer</a></li>
+                    <li><a th:href="@{/register/business}">Post Gigs for Your Shop</a></li>
+                    <li><a th:href="@{/login}">Account Sign In</a></li>
+                    <li><span class="text-secondary">Erode Textile & MSME Hub</span></li>
+                </ul>
+            </div>
+
+            <!-- Legal & Info -->
+            <div class="col-lg-3 col-md-6">
+                <h6>Transparency & Trust</h6>
+                <ul class="list-unstyled d-flex flex-column gap-2 small">
+                    <li><a th:href="@{/privacy}">Privacy Policy</a></li>
+                    <li><a th:href="@{/terms}">Terms of Service</a></li>
+                    <li><span class="badge bg-secondary">MVP Phase 1-9</span></li>
+                </ul>
+                <div class="p-2 rounded bg-dark border border-secondary mt-3">
+                    <p class="small text-muted mb-0" style="font-size: 0.75rem;">
+                        Note: Initial MVP connects local parties for project milestones. Direct business payments are settled privately between client and student.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <hr class="border-secondary opacity-25">
+
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center py-2 small text-secondary">
+            <p class="mb-0">&copy; 2026 GigCampus &mdash; Hyperlocal Student Gig Marketplace.</p>
+            <p class="mb-0">Designed for Erode College Students & Local MSMEs</p>
+        </div>
+    </div>
+</footer>
+<!-- SockJS & STOMP for Real-Time Live Notifications & Messaging -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

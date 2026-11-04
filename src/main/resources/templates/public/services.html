@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services & Capabilities &mdash; GigCampus Erode</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main>
+        <!-- Header -->
+        <section class="hero-section text-center py-5">
+            <div class="container">
+                <span class="badge rounded-pill px-3 py-2 fw-semibold mb-3" style="background-color: var(--gc-blue-bg); color: var(--gc-blue); border: 1px solid var(--gc-border);">
+                    <i class="bi bi-stars me-1"></i> Hyperlocal Digital Capabilities
+                </span>
+                <h1 class="hero-title mb-3">Affordable Digital Services from <span>Local Engineering Students</span></h1>
+                <p class="hero-tagline mx-auto" style="max-width: 680px;">
+                    From textile showrooms on Brough Road to industrial powerloom suppliers in Veerappanchatram, Erode businesses hire vetted college talent for practical digital projects.
+                </p>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <a th:href="@{/gigs}" class="btn btn-primary-gc"><i class="bi bi-search me-1"></i> Browse Open Gigs</a>
+                    <a th:href="@{/register/business}" class="btn btn-outline-navy"><i class="bi bi-plus-circle me-1"></i> Post a Custom Gig</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Grid -->
+        <section class="py-5 bg-white">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-navy">Popular Service Categories in Erode</h2>
+                    <p class="text-muted">Clearly scoped, practical gigs built for local retail, wholesale, and MSME needs.</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Service 1 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border p-4 rounded-4 shadow-sm hover-shadow">
+                            <div class="category-icon-box bg-primary-subtle text-primary">
+                                <i class="bi bi-globe"></i>
+                            </div>
+                            <h4 class="fw-bold text-navy mb-2">Website & Landing Page Development</h4>
+                            <p class="text-muted small mb-3">
+                                Mobile-friendly showcase sites, digital fabric catalogs, and contact forms for Erode shops and manufacturers.
+                            </p>
+                            <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Typical Deliverables:</h6>
+                            <ul class="list-unstyled small text-secondary mb-4">
+                                <li><i class="bi bi-check2 text-success me-2"></i>3 to 5 responsive HTML/Bootstrap pages</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Mobile navigation & Google Map embed</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>WhatsApp click-to-chat inquiry buttons</li>
+                            </ul>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-teal">₹3,000 &ndash; ₹8,000</span>
+                                <a th:href="@{/gigs(categoryId=1)}" class="btn btn-outline-navy btn-sm">Explore Gigs &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border p-4 rounded-4 shadow-sm hover-shadow">
+                            <div class="category-icon-box bg-warning-subtle text-warning">
+                                <i class="bi bi-palette"></i>
+                            </div>
+                            <h4 class="fw-bold text-navy mb-2">Graphic & Promotional Poster Design</h4>
+                            <p class="text-muted small mb-3">
+                                Festive sale banners, WhatsApp status promotions, price list brochures, and print-ready shop flex boards.
+                            </p>
+                            <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Typical Deliverables:</h6>
+                            <ul class="list-unstyled small text-secondary mb-4">
+                                <li><i class="bi bi-check2 text-success me-2"></i>High-resolution Canva / Photoshop banners</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Bilingual Tamil & English typography</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Ready formats for Instagram & WhatsApp</li>
+                            </ul>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-teal">₹800 &ndash; ₹2,500</span>
+                                <a th:href="@{/gigs(categoryId=2)}" class="btn btn-outline-navy btn-sm">Explore Gigs &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border p-4 rounded-4 shadow-sm hover-shadow">
+                            <div class="category-icon-box bg-success-subtle text-success">
+                                <i class="bi bi-megaphone"></i>
+                            </div>
+                            <h4 class="fw-bold text-navy mb-2">Social Media & Local Google SEO</h4>
+                            <p class="text-muted small mb-3">
+                                Claiming and optimizing Google Business Profiles, adding showroom photos, and setting up Instagram accounts.
+                            </p>
+                            <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Typical Deliverables:</h6>
+                            <ul class="list-unstyled small text-secondary mb-4">
+                                <li><i class="bi bi-check2 text-success me-2"></i>Verified Google Maps shop presence</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Review QR code standee design</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>First 5 promotional reels or posts</li>
+                            </ul>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-teal">₹1,500 &ndash; ₹4,000</span>
+                                <a th:href="@{/gigs(categoryId=3)}" class="btn btn-outline-navy btn-sm">Explore Gigs &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border p-4 rounded-4 shadow-sm hover-shadow">
+                            <div class="category-icon-box bg-info-subtle text-info">
+                                <i class="bi bi-file-earmark-spreadsheet"></i>
+                            </div>
+                            <h4 class="fw-bold text-navy mb-2">Excel & Inventory Data Organization</h4>
+                            <p class="text-muted small mb-3">
+                                Converting paper notebooks and rough bills into structured, formula-automated Excel spreadsheets.
+                            </p>
+                            <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Typical Deliverables:</h6>
+                            <ul class="list-unstyled small text-secondary mb-4">
+                                <li><i class="bi bi-check2 text-success me-2"></i>Item catalog with auto-stock low alerts</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Daily sales summary dashboard</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Clean customer ledger data sheets</li>
+                            </ul>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-teal">₹1,500 &ndash; ₹3,500</span>
+                                <a th:href="@{/gigs(categoryId=4)}" class="btn btn-outline-navy btn-sm">Explore Gigs &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border p-4 rounded-4 shadow-sm hover-shadow">
+                            <div class="category-icon-box bg-danger-subtle text-danger">
+                                <i class="bi bi-cpu"></i>
+                            </div>
+                            <h4 class="fw-bold text-navy mb-2">Software & Billing Setup Assistance</h4>
+                            <p class="text-muted master mb-3">
+                                Hands-on setup of thermal barcode printers, GST invoice templates, and shop billing computers.
+                            </p>
+                            <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Typical Deliverables:</h6>
+                            <ul class="list-unstyled small text-secondary mb-4">
+                                <li><i class="bi bi-check2 text-success me-2"></i>Printer driver & barcode sticker layout</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>GST tax rate master configuration</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Shop staff training on invoice generation</li>
+                            </ul>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-teal">₹2,000 &ndash; ₹5,000</span>
+                                <a th:href="@{/gigs(categoryId=5)}" class="btn btn-outline-navy btn-sm">Explore Gigs &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service 6 -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border p-4 rounded-4 shadow-sm hover-shadow">
+                            <div class="category-icon-box bg-purple-subtle text-purple" style="background: #f3e8ff; color: #9333ea;">
+                                <i class="bi bi-translate"></i>
+                            </div>
+                            <h4 class="fw-bold text-navy mb-2">Content Writing & Tamil Translation</h4>
+                            <p class="text-muted small mb-3">
+                                Product catalogs, English-to-Tamil translation, business brochures, and clear item descriptions.
+                            </p>
+                            <h6 class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem;">Typical Deliverables:</h6>
+                            <ul class="list-unstyled small text-secondary mb-4">
+                                <li><i class="bi bi-check2 text-success me-2"></i>Accurate bilingual fabric & product specs</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Professional brand story write-up</li>
+                                <li><i class="bi bi-check2 text-success me-2"></i>Clean PDF digital product catalog</li>
+                            </ul>
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-teal">₹1,000 &ndash; ₹3,000</span>
+                                <a th:href="@{/gigs(categoryId=6)}" class="btn btn-outline-navy btn-sm">Explore Gigs &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-5 bg-light border-top">
+            <div class="container text-center">
+                <h3 class="fw-bold text-navy mb-2">Ready to Get Your Digital Project Done?</h3>
+                <p class="text-muted mb-4 mx-auto" style="max-width: 550px;">
+                    Posting a gig on GigCampus is free. Connect directly with students from engineering colleges across Erode district.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a th:href="@{/register/business}" class="btn btn-primary-gc"><i class="bi bi-briefcase me-1"></i> Post a Gig as a Business</a>
+                    <a th:href="@{/students}" class="btn btn-outline-navy"><i class="bi bi-mortarboard me-1"></i> Browse Student Talent</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

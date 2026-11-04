@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions &mdash; GigCampus Erode</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="form-card p-4 p-md-5">
+                        <h2 class="fw-bold text-navy mb-3">Terms and Conditions</h2>
+                        <p class="text-muted small mb-4">Effective Date: October 2026</p>
+
+                        <h5 class="fw-bold text-navy">1. Platform Nature (MVP)</h5>
+                        <p class="text-secondary small" style="line-height: 1.8;">
+                            GigCampus is an academic and community hyperlocal facilitator connecting registered college students with local enterprises in Erode, Tamil Nadu for freelance digital tasks. GigCampus does not act as an employer, agent, or financial guarantor.
+                        </p>
+
+                        <h5 class="fw-bold text-navy mt-4">2. Milestone Commitments & Payment Settle</h5>
+                        <p class="text-secondary small" style="line-height: 1.8;">
+                            Budget quotes listed on gigs represent estimated or agreed milestone fees. The client business and the student freelancer settle financial payments directly between themselves upon delivery review. GigCampus does not charge transaction cuts or process credit cards in this release.
+                        </p>
+
+                        <h5 class="fw-bold text-navy mt-4">3. Prohibited Content & Abuse</h5>
+                        <p class="text-secondary small" style="line-height: 1.8;">
+                            Users are strictly prohibited from posting unlawful, misleading, or abusive gig listings. The administrative team retains full authority to remove listings, reject fraudulent verifications, or suspend violating user accounts immediately.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

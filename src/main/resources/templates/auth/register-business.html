@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Registration &mdash; GigCampus Erode</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+                    <div class="form-card p-4 p-md-5 shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+                            <div class="stat-icon bg-light text-primary" style="width: 48px; height: 48px; font-size: 1.4rem;"><i class="bi bi-briefcase-fill"></i></div>
+                            <div>
+                                <h3 class="fw-bold text-navy mb-0">Business Registration</h3>
+                                <p class="text-muted small mb-0">Register your shop, trade, or MSME in Erode to hire skilled student freelancers.</p>
+                            </div>
+                        </div>
+
+                        <form th:action="@{/register/business}" th:object="${businessDto}" method="post">
+                            <h6 class="fw-bold text-navy mb-3"><i class="bi bi-shop me-1"></i> Business Details</h6>
+
+                            <div class="mb-3">
+                                <label class="form-label">Business / Shop Name <span class="text-danger">*</span></label>
+                                <input type="text" th:field="*{businessName}" class="form-control" th:classappend="${#fields.hasErrors('businessName')} ? 'is-invalid'" placeholder="e.g. Kaveri Handlooms & Textiles">
+                                <div class="invalid-feedback" th:errors="*{businessName}"></div>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Business Sector / Category <span class="text-danger">*</span></label>
+                                    <select th:field="*{businessCategory}" class="form-select" th:classappend="${#fields.hasErrors('businessCategory')} ? 'is-invalid'">
+                                        <option value="">Select Category</option>
+                                        <option value="Textiles & Garments">Textiles & Garments</option>
+                                        <option value="Powerloom & Machinery">Powerloom & Machinery</option>
+                                        <option value="Retail & Supermarket">Retail & Supermarket</option>
+                                        <option value="Food, Dairy & Agriculture">Food, Dairy & Agriculture</option>
+                                        <option value="Printing & Packaging">Printing & Packaging</option>
+                                        <option value="Automobile & Spare Parts">Automobile & Spare Parts</option>
+                                        <option value="Professional & Other Services">Professional & Other Services</option>
+                                    </select>
+                                    <div class="invalid-feedback" th:errors="*{businessCategory}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Location in Erode <span class="text-danger">*</span></label>
+                                    <input type="text" th:field="*{location}" class="form-control" th:classappend="${#fields.hasErrors('location')} ? 'is-invalid'" placeholder="e.g. Brough Road / Veerappanchatram">
+                                    <div class="invalid-feedback" th:errors="*{location}"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Short Description of Business</label>
+                                <textarea th:field="*{description}" rows="3" class="form-control" placeholder="Briefly describe what your business sells or manufactures..."></textarea>
+                            </div>
+
+                            <h6 class="fw-bold text-navy mb-3 pt-2 border-top"><i class="bi bi-person me-1"></i> Contact Person & Login Credentials</h6>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Contact Person Name <span class="text-danger">*</span></label>
+                                    <input type="text" th:field="*{fullName}" class="form-control" th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid'" placeholder="e.g. S. Muthuswamy">
+                                    <div class="invalid-feedback" th:errors="*{fullName}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number (10 digits) <span class="text-danger">*</span></label>
+                                    <input type="text" th:field="*{phone}" class="form-control" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'" placeholder="9842200000" maxlength="10">
+                                    <div class="invalid-feedback" th:errors="*{phone}"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Official / Login Email <span class="text-danger">*</span></label>
+                                <input type="email" th:field="*{email}" class="form-control" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" placeholder="contact@shopname.com">
+                                <div class="invalid-feedback" th:errors="*{email}"></div>
+                            </div>
+
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Password <span class="text-danger">*</span></label>
+                                    <input type="password" th:field="*{password}" class="form-control" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" placeholder="Min 6 characters">
+                                    <div class="invalid-feedback" th:errors="*{password}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                    <input type="password" th:field="*{confirmPassword}" class="form-control" th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'" placeholder="Re-type password">
+                                    <div class="invalid-feedback" th:errors="*{confirmPassword}"></div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary-gc w-100 py-2 fs-6 fw-semibold">
+                                Complete Business Registration
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <span class="small text-muted">Already have a business account? <a th:href="@{/login}" class="fw-semibold">Sign in</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicant Proposals &mdash; GigCampus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="py-4">
+        <div class="container">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <!-- Gig Context Header -->
+            <div class="form-card p-4 mb-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span class="status-badge" th:classappend="${'status-' + #strings.toLowerCase(gig.status.name())}" th:text="${gig.status.displayName}">Status</span>
+                            <span class="badge badge-mode" th:text="${gig.workMode.displayName}">Work Mode</span>
+                        </div>
+                        <h3 class="fw-bold text-navy mb-1" th:text="${gig.title}">Gig Title</h3>
+                        <p class="text-muted small mb-0">
+                            Budget: <strong class="text-teal" th:text="${'₹' + gig.budget}">₹0</strong> &bull;
+                            Category: <span th:text="${gig.category.name}">Category</span> &bull;
+                            Deadline: <span th:text="${gig.deadline != null ? #temporals.format(gig.deadline, 'dd MMM yyyy') : 'Flexible'}">Date</span>
+                        </p>
+                    </div>
+                    <div>
+                        <a th:href="@{/business/dashboard}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i> Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proposals Section -->
+            <div class="form-card p-4">
+                <h4 class="fw-bold text-navy mb-3">
+                    Student Applications (<span th:text="${#lists.size(applications)}">0</span>)
+                </h4>
+
+                <div th:if="${#lists.isEmpty(applications)}" class="text-center py-5">
+                    <i class="bi bi-inbox fs-1 text-muted"></i>
+                    <h5 class="fw-bold text-dark mt-3">No Proposals Received Yet</h5>
+                    <p class="text-muted small">College students are browsing available gigs in Erode. You will receive an instant notification when an application is submitted.</p>
+                </div>
+
+                <div th:unless="${#lists.isEmpty(applications)}" class="d-flex flex-column gap-4">
+                    <div th:each="app : ${applications}" class="p-4 rounded-3 border bg-white shadow-sm">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-3 pb-3 border-bottom">
+                            <div>
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <h5 class="fw-bold text-navy mb-0" th:text="${app.student.user.fullName}">Student Name</h5>
+                                    <span class="badge bg-light text-teal border" style="color: var(--gc-teal);" th:text="${app.student.ratingAverage + ' ★'}">0.0 ★</span>
+                                    <span class="status-badge ms-2" th:classappend="${'status-' + #strings.toLowerCase(app.status.name())}" th:text="${app.status.displayName}">Status</span>
+                                </div>
+                                <div class="small text-muted">
+                                    <i class="bi bi-mortarboard me-1"></i> <span th:text="${app.student.collegeName}">College Name</span> &bull;
+                                    <span th:text="${app.student.department}">Department</span> &bull;
+                                    <span th:text="${app.student.yearOfStudy}">Year</span>
+                                </div>
+                                <div class="small text-muted mt-1">
+                                    <i class="bi bi-tools me-1"></i> Skills: <span class="fw-semibold text-dark" th:text="${app.student.skills}">Skills</span>
+                                </div>
+                                <div th:if="${app.student.portfolioUrl != null && !app.student.portfolioUrl.isBlank()}" class="small mt-1">
+                                    <i class="bi bi-link-45deg me-1"></i> <a th:href="${app.student.portfolioUrl}" target="_blank" class="text-decoration-none">View Portfolio</a>
+                                </div>
+                            </div>
+
+                            <!-- Proposal Terms -->
+                            <div class="text-md-end p-2 px-3 rounded bg-light border">
+                                <span class="small text-muted d-block">Student Quote</span>
+                                <span class="fw-bold text-teal fs-5" th:text="${'₹' + app.proposedBudget}">₹0.00</span>
+                                <div class="small text-muted"><i class="bi bi-clock me-1"></i> <span th:text="${app.estimatedDays + ' days delivery'}">5 days</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Proposal Pitch -->
+                        <div class="mb-3">
+                            <h6 class="fw-bold small text-navy mb-1">Student's Proposal / Cover Note:</h6>
+                            <div class="p-3 bg-light rounded text-secondary small" style="white-space: pre-line; line-height: 1.7;" th:text="${app.proposal}">
+                                Proposal text here...
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 pt-2 border-top">
+                            <span class="small text-muted">
+                                Submitted on: <span th:text="${#temporals.format(app.appliedAt, 'dd MMM yyyy, hh:mm a')}">Date</span>
+                            </span>
+
+                            <div class="d-flex gap-2">
+                                <!-- Direct Live Chat -->
+                                <a th:href="@{/chat/start/application/{appId}(appId=${app.id})}" class="btn btn-outline-navy btn-sm" title="Real-time live messaging">
+                                    <i class="bi bi-chat-dots-fill me-1"></i> Live Chat
+                                </a>
+
+                                <!-- If PENDING: Show Accept & Reject -->
+                                <form th:if="${app.status.name() == 'PENDING'}" th:action="@{'/business/applications/' + ${app.id} + '/status'}" method="post" class="d-inline">
+                                    <input type="hidden" name="status" value="ACCEPTED">
+                                    <button type="submit" class="btn btn-success btn-sm" data-confirm="Accept this proposal? This will mark the gig as In Progress and notify the student.">
+                                        <i class="bi bi-check-lg me-1"></i> Accept Proposal
+                                    </button>
+                                </form>
+
+                                <form th:if="${app.status.name() == 'PENDING'}" th:action="@{'/business/applications/' + ${app.id} + '/status'}" method="post" class="d-inline">
+                                    <input type="hidden" name="status" value="REJECTED">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" data-confirm="Reject this student's application?">
+                                        <i class="bi bi-x-lg me-1"></i> Decline
+                                    </button>
+                                </form>
+
+                                <!-- If ACCEPTED: Show Mark Completed -->
+                                <form th:if="${app.status.name() == 'ACCEPTED'}" th:action="@{'/business/applications/' + ${app.id} + '/complete'}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-primary-gc btn-sm" data-confirm="Mark this work deliverable as complete? You will be prompted to leave a review for the student.">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Mark Work as Completed
+                                    </button>
+                                </form>
+
+                                <!-- If COMPLETED: Show Review button -->
+                                <a th:if="${app.status.name() == 'COMPLETED'}" th:href="@{'/business/reviews/new?gigId=' + ${gig.id} + '&studentUserId=' + ${app.student.user.id}}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-star-fill text-warning me-1"></i> Review Student
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

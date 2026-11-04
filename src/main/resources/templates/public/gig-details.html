@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${gig.title + ' &mdash; GigCampus'}">Gig Details &mdash; GigCampus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="py-4">
+        <div class="container">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb small">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/gigs}">Browse Gigs</a></li>
+                    <li class="breadcrumb-item active" th:text="${gig.title}">Gig Title</li>
+                </ol>
+            </nav>
+
+            <div class="row g-4">
+                <!-- Left Details Column -->
+                <div class="col-lg-8">
+                    <div class="form-card mb-4 p-4 p-md-5">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                            <span class="badge badge-mode fs-6 px-3 py-1" th:text="${gig.workMode.displayName}">Remote</span>
+                            <span class="status-badge" th:classappend="${'status-' + #strings.toLowerCase(gig.status.name())}" th:text="${gig.status.displayName}">Open</span>
+                        </div>
+
+                        <h2 class="fw-bold text-navy mb-3" th:text="${gig.title}">5-Page Responsive Showcase Website</h2>
+
+                        <div class="d-flex flex-wrap gap-4 text-muted small pb-3 mb-4 border-bottom">
+                            <div><i class="bi bi-tag-fill me-1 text-teal" style="color: var(--gc-teal);"></i> <strong th:text="${gig.category.name}">Category</strong></div>
+                            <div><i class="bi bi-geo-alt-fill me-1 text-teal" style="color: var(--gc-teal);"></i> <span th:text="${gig.location}">Erode</span></div>
+                            <div th:if="${gig.deadline != null}"><i class="bi bi-calendar-event me-1 text-teal" style="color: var(--gc-teal);"></i> Deadline: <span th:text="${#temporals.format(gig.deadline, 'dd MMM yyyy')}">Date</span></div>
+                            <div><i class="bi bi-eye-fill me-1 text-teal" style="color: var(--gc-teal);"></i> <span th:text="${gig.viewsCount}">0</span> views</div>
+                        </div>
+
+                        <h5 class="fw-bold text-navy mb-2">Description & Scope of Work</h5>
+                        <div class="text-secondary mb-4" style="line-height: 1.8; font-size: 0.975rem; white-space: pre-line;" th:text="${gig.description}">
+                            Detailed description of requirements...
+                        </div>
+
+                        <h6 class="fw-bold text-navy mb-2">Required Skills / Deliverables</h6>
+                        <div class="mb-4 d-flex flex-wrap gap-2">
+                            <span class="skill-tag fs-6 px-3 py-1" th:text="${gig.requiredSkills}">HTML5, CSS, Canva</span>
+                        </div>
+                    </div>
+
+                    <!-- Application Box for Students -->
+                    <div class="form-card p-4 p-md-5" id="apply-section">
+                        <h4 class="fw-bold text-navy mb-3 d-flex align-items-center gap-2">
+                            <div class="stat-icon bg-light text-teal" style="width: 38px; height: 38px; font-size: 1.1rem;"><i class="bi bi-send-fill"></i></div>
+                            <span>Apply for this Opportunity</span>
+                        </h4>
+
+                        <!-- Anonymous Visitor Prompt -->
+                        <div sec:authorize="isAnonymous()" class="p-4 bg-light rounded-4 text-center border">
+                            <i class="bi bi-lock-fill fs-1 text-secondary mb-2 d-block"></i>
+                            <h5 class="fw-bold text-navy">College Student Login Required</h5>
+                            <p class="text-muted small mb-3" style="max-width: 450px; margin: 0 auto;">Please sign in with your student account or create a free student profile to submit a proposal for this gig.</p>
+                            <div class="d-flex gap-2 justify-content-center">
+                                <a th:href="@{/login}" class="btn btn-navy btn-sm">Login</a>
+                                <a th:href="@{/register/student}" class="btn btn-primary-gc btn-sm">Student Registration</a>
+                            </div>
+                        </div>
+
+                        <!-- Already Applied -->
+                        <div th:if="${isStudent && hasApplied}" class="alert alert-info border-info-subtle d-flex align-items-center gap-3 p-4 rounded-3 shadow-xs">
+                            <i class="bi bi-check-circle-fill fs-2 text-info"></i>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold mb-1 text-navy">Application Already Submitted!</h6>
+                                <p class="mb-3 small text-secondary">You have submitted your proposal for this gig. You can monitor the business owner's decision or withdraw under <a th:href="@{/student/applications}" class="alert-link">My Applications</a>.</p>
+                                <a th:href="@{/chat/start/direct(gigId=${gig.id}, studentUserId=${currentUser.id}, businessUserId=${gig.business.user.id})}" class="btn btn-navy btn-sm">
+                                    <i class="bi bi-chat-dots-fill me-1"></i> Live Chat with Business Owner
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Can Apply -->
+                        <div th:if="${isStudent && !hasApplied}">
+                            <div th:if="${gig.status.name() != 'OPEN'}" class="alert alert-warning">
+                                This gig is currently <strong th:text="${gig.status.displayName}">Closed</strong> and is not accepting new proposals.
+                            </div>
+
+                            <form th:if="${gig.status.name() == 'OPEN'}" th:action="@{'/student/gigs/' + ${gig.id} + '/apply'}" method="post">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small text-muted">Your Proposal Pitch <span class="text-danger">*</span></label>
+                                    <textarea name="proposal" rows="5" class="form-control" required
+                                              placeholder="Introduce yourself, mention your college and relevant tools, and describe your timeline or milestone delivery plan."></textarea>
+                                    <div class="form-text small">Minimum 20 characters. Highlight practical projects or relevant coursework.</div>
+                                </div>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold small text-muted">Estimated Delivery Time (Days) <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light"><i class="bi bi-clock"></i></span>
+                                            <input type="number" name="estimatedDays" class="form-control" min="1" max="90" required placeholder="e.g. 5">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold small text-muted">Proposed Milestone Budget (₹)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light">₹</span>
+                                            <input type="number" name="proposedBudget" class="form-control" th:value="${gig.budget}" min="100" step="50">
+                                        </div>
+                                        <div class="form-text small">Listed gig budget is ₹<span th:text="${gig.budget}"></span></div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary-gc py-2 px-4 fw-semibold">
+                                    <i class="bi bi-send-fill me-1"></i> Submit My Proposal
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Business User Viewing Own Gig -->
+                        <div sec:authorize="hasRole('ROLE_BUSINESS')" th:if="${currentUser != null && gig.business.user.id == currentUser.id}" class="alert alert-light border p-3 rounded-3">
+                            <h6 class="fw-bold mb-1 text-navy">You are the author of this gig.</h6>
+                            <p class="small text-muted mb-3">Review submissions from college applicants or manage the listing status.</p>
+                            <a th:href="@{'/business/gigs/' + ${gig.id} + '/applicants'}" class="btn btn-outline-teal btn-sm">
+                                View Applicant Proposals (<span th:text="${#lists.size(gig.applications)}">0</span>)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar: Business Card & Trust Info -->
+                <div class="col-lg-4">
+                    <!-- Budget Summary Card -->
+                    <div class="stat-card mb-4 p-4 text-center">
+                        <span class="stat-label">Milestone Budget</span>
+                        <div class="stat-val text-teal my-2" style="color: var(--gc-teal);" th:text="${'₹' + #numbers.formatDecimal(gig.budget, 1, 'COMMA', 2, 'POINT')}">₹4,000.00</div>
+                        <p class="text-muted small mb-0">Direct payment between business & student upon project completion.</p>
+
+                        <!-- Bookmark Action for Students -->
+                        <form sec:authorize="hasRole('ROLE_STUDENT')" th:action="@{/student/gigs/{id}/toggle-save(id=${gig.id})}" method="post" class="mt-3">
+                            <input type="hidden" name="redirectUrl" th:value="@{/gigs/{id}(id=${gig.id})}">
+                            <button type="submit" class="btn btn-outline-secondary w-100 btn-sm">
+                                <i th:class="${isSaved ? 'bi bi-bookmark-fill text-danger me-1' : 'bi bi-bookmark me-1'}"></i>
+                                <span th:text="${isSaved ? 'Saved to Bookmarks' : 'Save / Bookmark Gig'}">Bookmark</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Business Profile Card -->
+                    <div class="form-card mb-4 p-4">
+                        <h6 class="fw-bold text-navy mb-3"><i class="bi bi-shop me-2 text-teal" style="color: var(--gc-teal);"></i>About the Business</h6>
+                        <h5 class="fw-bold text-navy mb-1" th:text="${gig.business.businessName}">Kaveri Handlooms</h5>
+                        <p class="text-muted small mb-2" th:text="${gig.business.businessCategory}">Textiles & Garments</p>
+
+                        <div class="mb-3">
+                            <span th:if="${gig.business.verificationStatus.name() == 'VERIFIED'}" class="badge-verified">
+                                <i class="bi bi-patch-check-fill"></i> Verified Erode MSME
+                            </span>
+                            <span th:unless="${gig.business.verificationStatus.name() == 'VERIFIED'}" class="badge-unverified px-2 py-1 rounded">
+                                <i class="bi bi-hourglass-split"></i> Unverified Profile
+                            </span>
+                        </div>
+
+                        <div class="text-secondary small mb-3" th:text="${gig.business.description}">
+                            Business description...
+                        </div>
+
+                        <div class="small text-muted mb-1"><i class="bi bi-geo-alt me-1 text-teal"></i> <span th:text="${gig.business.location}">Brough Road, Erode</span></div>
+                        <div th:if="${gig.business.websiteUrl != null && !gig.business.websiteUrl.isBlank()}" class="small text-muted mb-1">
+                            <i class="bi bi-link-45deg me-1 text-teal"></i> <a th:href="${gig.business.websiteUrl}" target="_blank" class="text-decoration-none">Website</a>
+                        </div>
+                    </div>
+
+                    <!-- Safety Guidelines -->
+                    <div class="p-3 bg-white rounded-3 border small shadow-xs">
+                        <h6 class="fw-bold text-navy mb-2"><i class="bi bi-shield-check me-1 text-teal" style="color: var(--gc-teal);"></i> Safe Working Guidelines</h6>
+                        <ul class="mb-0 ps-3 text-muted" style="line-height: 1.6;">
+                            <li>Agree on milestones and scope in writing via Live Chat.</li>
+                            <li>Never share bank passwords, UPI PINs, or OTPs.</li>
+                            <li>Payment is settled directly upon deliverable verification.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

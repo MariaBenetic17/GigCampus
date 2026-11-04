@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard &mdash; GigCampus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main class="py-4">
+        <div class="container">
+            <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+            <!-- Business Header & Verification Banner -->
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <h2 class="fw-bold text-navy mb-0" th:text="${profile.businessName}">Kaveri Handlooms</h2>
+                        <span th:if="${profile.verificationStatus.name() == 'VERIFIED'}" class="badge-verified fs-6">
+                            <i class="bi bi-patch-check-fill"></i> Verified MSME
+                        </span>
+                        <span th:if="${profile.verificationStatus.name() == 'PENDING_REVIEW'}" class="badge bg-warning text-dark">
+                            <i class="bi bi-hourglass-split"></i> Verification Under Review
+                        </span>
+                        <span th:if="${profile.verificationStatus.name() == 'UNVERIFIED'}" class="badge bg-secondary">
+                            Unverified
+                        </span>
+                    </div>
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-tag me-1"></i> <span th:text="${profile.businessCategory}">Sector</span> &bull; <i class="bi bi-geo-alt me-1"></i> <span th:text="${profile.location}">Location</span>
+                    </p>
+                </div>
+                <div class="mt-3 mt-md-0 d-flex gap-2">
+                    <a th:href="@{/business/gigs/new}" class="btn btn-primary-gc"><i class="bi bi-plus-circle me-1"></i> Post New Gig</a>
+                    <a th:href="@{/business/profile}" class="btn btn-outline-navy"><i class="bi bi-shop me-1"></i> Business Profile</a>
+                </div>
+            </div>
+
+            <!-- Verification Callout if Unverified -->
+            <div th:if="${profile.verificationStatus.name() == 'UNVERIFIED'}" class="alert alert-light border border-primary-subtle d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4 p-3 shadow-sm">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-shield-check fs-2 text-primary" style="color: var(--gc-blue) !important;"></i>
+                    <div>
+                        <h6 class="fw-bold mb-0 text-navy">Get Your Erode Business Verified</h6>
+                        <span class="small text-muted">Verified businesses receive 3x more proposals from top college students. Submit your shop registration or GSTIN.</span>
+                    </div>
+                </div>
+                <a th:href="@{/business/profile#verification-box}" class="btn btn-outline-teal btn-sm">Request Verification</a>
+            </div>
+
+            <!-- Summary Stat Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="stat-label">Total Gigs</span>
+                            <div class="stat-icon bg-light text-primary"><i class="bi bi-list-task"></i></div>
+                        </div>
+                        <div class="stat-val" th:text="${#lists.size(gigs)}">0</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="stat-label">Open Listings</span>
+                            <div class="stat-icon bg-light text-primary" style="color: var(--gc-blue) !important;"><i class="bi bi-door-open"></i></div>
+                        </div>
+                        <div class="stat-val text-primary" style="color: var(--gc-blue) !important;" th:text="${openGigsCount}">0</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="stat-label">In Progress</span>
+                            <div class="stat-icon bg-light text-warning"><i class="bi bi-kanban"></i></div>
+                        </div>
+                        <div class="stat-val text-warning" th:text="${activeProjectsCount}">0</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="stat-label">Completed</span>
+                            <div class="stat-icon bg-light text-success"><i class="bi bi-check2-all"></i></div>
+                        </div>
+                        <div class="stat-val text-success" th:text="${completedGigsCount}">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gigs Management Table -->
+            <div class="form-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-navy mb-0">My Gig Listings</h5>
+                    <a th:href="@{/business/gigs/new}" class="btn btn-primary-gc btn-sm"><i class="bi bi-plus me-1"></i> Post Gig</a>
+                </div>
+
+                <div th:if="${#lists.isEmpty(gigs)}" class="text-center py-5">
+                    <i class="bi bi-clipboard2-plus fs-1 text-muted"></i>
+                    <h5 class="fw-bold text-dark mt-3">You Haven't Posted Any Gigs Yet</h5>
+                    <p class="text-muted small">Reach hundreds of local college students in Erode eager to help your business.</p>
+                    <a th:href="@{/business/gigs/new}" class="btn btn-primary-gc btn-sm">Post Your First Gig</a>
+                </div>
+
+                <div th:unless="${#lists.isEmpty(gigs)}" class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small">
+                            <tr>
+                                <th>Gig Opportunity</th>
+                                <th>Category</th>
+                                <th>Budget</th>
+                                <th>Mode</th>
+                                <th>Status</th>
+                                <th>Applicants</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="gig : ${gigs}">
+                                <td>
+                                    <a th:href="@{'/gigs/' + ${gig.id}}" class="fw-bold text-dark text-decoration-none" th:text="${gig.title}">Gig Title</a>
+                                    <div class="small text-muted">Posted: <span th:text="${#temporals.format(gig.createdAt, 'dd MMM yyyy')}">Date</span></div>
+                                </td>
+                                <td th:text="${gig.category.name}">Category</td>
+                                <td class="fw-semibold text-teal" th:text="${'₹' + gig.budget}">₹0.00</td>
+                                <td>
+                                    <span class="badge badge-mode" th:text="${gig.workMode.displayName}">Remote</span>
+                                </td>
+                                <td>
+                                    <span class="status-badge" th:classappend="${'status-' + #strings.toLowerCase(gig.status.name())}" th:text="${gig.status.displayName}">Status</span>
+                                </td>
+                                <td>
+                                    <a th:href="@{'/business/gigs/' + ${gig.id} + '/applicants'}" class="btn btn-outline-teal btn-sm position-relative">
+                                        <i class="bi bi-people me-1"></i> Proposals
+                                        <span class="badge bg-dark rounded-pill ms-1" th:text="${#lists.size(gig.applications)}">0</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a th:href="@{'/business/gigs/' + ${gig.id} + '/edit'}" class="btn btn-light border" title="Edit Gig"><i class="bi bi-pencil"></i></a>
+                                        <form th:if="${gig.status.name() == 'OPEN'}" th:action="@{'/business/gigs/' + ${gig.id} + '/status'}" method="post" class="d-inline">
+                                            <input type="hidden" name="status" value="CLOSED">
+                                            <button type="submit" class="btn btn-light border text-danger" title="Close Gig" data-confirm="Are you sure you want to close this gig?"><i class="bi bi-slash-circle"></i></button>
+                                        </form>
+                                        <form th:if="${gig.status.name() == 'CLOSED'}" th:action="@{'/business/gigs/' + ${gig.id} + '/status'}" method="post" class="d-inline">
+                                            <input type="hidden" name="status" value="OPEN">
+                                            <button type="submit" class="btn btn-light border text-success" title="Reopen Gig"><i class="bi bi-arrow-repeat"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

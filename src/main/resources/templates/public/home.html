@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GigCampus &mdash; Hyperlocal Student Gig Marketplace | Erode, Tamil Nadu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link th:href="@{/css/custom.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container text-center text-lg-start position-relative" style="z-index: 2;">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-7">
+                        <div class="hero-badge mb-3">
+                            <span class="badge rounded-pill" style="background: var(--gc-blue); color: #fff;">Erode Hyperlocal</span>
+                            <span>Connecting local MSMEs with college talent</span>
+                        </div>
+                        <h1 class="hero-title mb-3">
+                            Local Businesses.<br>
+                            Student Talent.<br>
+                            <span>Real Opportunities.</span>
+                        </h1>
+                        <p class="hero-tagline mb-4">
+                            Connect your shop, workshop, or textile enterprise in Erode with ambitious college students skilled in website building, poster design, inventory management, and digital marketing.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start mb-4">
+                            <a th:href="@{/gigs}" class="btn btn-primary-gc px-4 py-2 fs-6 shadow-sm">
+                                <i class="bi bi-search me-2"></i>Find Gigs
+                            </a>
+                            <a th:href="@{/register/business}" class="btn btn-outline-navy px-4 py-2 fs-6">
+                                <i class="bi bi-briefcase me-2"></i>Hire Student Talent
+                            </a>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center gap-4 text-secondary small justify-content-center justify-content-lg-start fw-semibold">
+                            <div class="d-flex align-items-center gap-2"><i class="bi bi-shield-check text-primary" style="color: var(--gc-blue) !important;"></i> Zero Platform Commission</div>
+                            <div class="d-flex align-items-center gap-2"><i class="bi bi-patch-check-fill text-primary" style="color: var(--gc-blue) !important;"></i> Verified Erode MSMEs</div>
+                            <div class="d-flex align-items-center gap-2"><i class="bi bi-award-fill text-primary" style="color: var(--gc-blue) !important;"></i> Real Portfolio Work</div>
+                        </div>
+                    </div>
+
+                    <!-- Search Box on Hero -->
+                    <div class="col-lg-5">
+                        <div class="search-box-elevated text-dark p-4">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <div class="stat-icon bg-light text-teal" style="width: 36px; height: 36px; font-size: 1.1rem; border-radius: 8px;">
+                                    <i class="bi bi-search"></i>
+                                </div>
+                                <h5 class="fw-bold mb-0 text-navy">Find Gigs in Erode</h5>
+                            </div>
+                            <form th:action="@{/gigs}" method="get">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-semibold text-muted">Keyword or Skill</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                                        <input type="text" name="keyword" class="form-control border-start-0 ps-0" placeholder="e.g. Website, Canva, Excel, GST">
+                                    </div>
+                                </div>
+                                <div class="row g-2 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold text-muted">Service Category</label>
+                                        <select name="categoryId" class="form-select form-select-sm">
+                                            <option value="">All Categories</option>
+                                            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-semibold text-muted">Work Mode</label>
+                                        <select name="workMode" class="form-select form-select-sm">
+                                            <option value="">Any Work Mode</option>
+                                            <option value="REMOTE">Remote</option>
+                                            <option value="ON_SITE">On-Site (Erode)</option>
+                                            <option value="HYBRID">Hybrid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary-gc w-100 py-2 fw-semibold">
+                                    <i class="bi bi-funnel me-1"></i> Browse Matching Gigs
+                                </button>
+                            </form>
+                            <div class="mt-3 pt-3 border-top text-center">
+                                <span class="small text-muted">Popular in Erode:</span>
+                                <div class="d-flex flex-wrap gap-1 justify-content-center mt-1">
+                                    <a th:href="@{/gigs(keyword='Website')}" class="badge bg-light text-secondary border text-decoration-none">Web Dev</a>
+                                    <a th:href="@{/gigs(keyword='Canva')}" class="badge bg-light text-secondary border text-decoration-none">Canva Poster</a>
+                                    <a th:href="@{/gigs(keyword='Tally')}" class="badge bg-light text-secondary border text-decoration-none">Tally / GST</a>
+                                    <a th:href="@{/gigs(keyword='Catalog')}" class="badge bg-light text-secondary border text-decoration-none">Textile Catalog</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Platform Statistics from Actual Database Records -->
+        <section class="py-4 bg-white border-bottom shadow-xs">
+            <div class="container">
+                <div class="row g-4 text-center align-items-center">
+                    <div class="col-6 col-md-3">
+                        <div class="d-flex align-items-center justify-content-center gap-3">
+                            <div class="stat-icon bg-light text-primary" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                                <i class="bi bi-mortarboard-fill"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fs-3 fw-extrabold text-navy lh-1" th:text="${stats != null ? stats['totalStudents'] : 0}">0</div>
+                                <div class="small text-muted fw-semibold">Enrolled Students</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="d-flex align-items-center justify-content-center gap-3">
+                            <div class="stat-icon bg-light text-teal" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                                <i class="bi bi-buildings-fill"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fs-3 fw-extrabold text-navy lh-1" th:text="${stats != null ? stats['totalBusinesses'] : 0}">0</div>
+                                <div class="small text-muted fw-semibold">Registered MSMEs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="d-flex align-items-center justify-content-center gap-3">
+                            <div class="stat-icon bg-light text-warning" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                                <i class="bi bi-briefcase-fill"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fs-3 fw-extrabold text-navy lh-1" th:text="${stats != null ? stats['openGigs'] : 0}">0</div>
+                                <div class="small text-muted fw-semibold">Open Gigs in Erode</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="d-flex align-items-center justify-content-center gap-3">
+                            <div class="stat-icon bg-light text-success" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                                <i class="bi bi-check2-circle"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fs-3 fw-extrabold text-navy lh-1" th:text="${stats != null ? stats['completedProjects'] : 0}">0</div>
+                                <div class="small text-muted fw-semibold">Delivered Projects</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="py-5">
+            <div class="container py-4">
+                <div class="text-center mb-5">
+                    <span class="badge rounded-pill px-3 py-2 fw-semibold mb-2" style="background-color: var(--gc-blue-bg); color: var(--gc-blue); border: 1px solid var(--gc-border);">Service Sectors</span>
+                    <h2 class="fw-bold text-navy">Popular Digital Services for Erode Businesses</h2>
+                    <p class="text-muted" style="max-width: 650px; margin: 0 auto;">High-demand digital tasks delivered by students from local engineering and arts colleges.</p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6" th:each="cat : ${categories}">
+                        <a th:href="@{/gigs(categoryId=${cat.id})}" class="category-card shadow-xs">
+                            <div class="category-icon-box">
+                                <i th:class="${'bi ' + cat.iconClass}"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2 text-navy" th:text="${cat.name}">Category Name</h5>
+                            <p class="text-muted small mb-0 flex-grow-1" th:text="${cat.description}">Short description of services included in this category.</p>
+                            <div class="pt-3 mt-3 border-top d-flex align-items-center justify-content-between text-blue small fw-semibold" style="color: var(--gc-blue);">
+                                <span>Browse category</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Gigs Section -->
+        <section class="py-5 bg-white border-top border-bottom">
+            <div class="container py-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+                    <div>
+                        <span class="badge rounded-pill px-3 py-2 fw-semibold mb-2" style="background-color: var(--gc-blue-subtle); color: var(--gc-blue);">Live Listings</span>
+                        <h2 class="fw-bold text-navy mb-1">Featured Gigs in Erode</h2>
+                        <p class="text-muted mb-0">Explore the latest open tasks posted by local enterprises.</p>
+                    </div>
+                    <div class="mt-3 mt-md-0">
+                        <a th:href="@{/gigs}" class="btn btn-outline-navy">View All Gigs <i class="bi bi-arrow-right ms-1"></i></a>
+                    </div>
+                </div>
+
+                <!-- Empty state if no gigs -->
+                <div th:if="${#lists.isEmpty(featuredGigs)}" class="text-center py-5 form-card">
+                    <i class="bi bi-inbox fs-1 text-muted"></i>
+                    <h5 class="mt-3 fw-bold text-navy">No Gigs Posted Yet</h5>
+                    <p class="text-muted small">Be the first business in Erode to publish an opportunity!</p>
+                    <a th:href="@{/register/business}" class="btn btn-primary-gc mt-2">Post a Gig Now</a>
+                </div>
+
+                <!-- Grid of Gigs -->
+                <div th:unless="${#lists.isEmpty(featuredGigs)}" class="row g-4">
+                    <div class="col-lg-4 col-md-6" th:each="gig : ${featuredGigs}">
+                        <div class="gig-card">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge badge-mode" th:text="${gig.workMode.displayName}">Remote</span>
+                                <span class="gig-budget" th:text="${'₹' + #numbers.formatDecimal(gig.budget, 1, 'COMMA', 2, 'POINT')}">₹4,000.00</span>
+                            </div>
+
+                            <h5 class="fw-bold mb-2">
+                                <a th:href="@{'/gigs/' + ${gig.id}}" class="text-decoration-none text-navy" th:text="${gig.title}">Gig Title</a>
+                            </h5>
+
+                            <p class="text-muted small flex-grow-1 mb-3" th:text="${#strings.abbreviate(gig.description, 120)}">
+                                Description snippet here...
+                            </p>
+
+                            <div class="mb-3 d-flex flex-wrap gap-1">
+                                <span class="badge bg-light text-secondary border" th:text="${gig.category.name}">Category</span>
+                                <span class="skill-tag" th:text="${gig.requiredSkills}">Skills</span>
+                            </div>
+
+                            <div class="pt-3 border-top mt-auto d-flex justify-content-between align-items-center">
+                                <div class="small">
+                                    <div class="fw-semibold text-dark" th:text="${gig.business.businessName}">Business Name</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">
+                                        <i class="bi bi-geo-alt"></i> <span th:text="${gig.location}">Erode</span>
+                                        <span th:if="${gig.business.verificationStatus.name() == 'VERIFIED'}" class="badge-verified ms-1" title="Verified Business">
+                                            <i class="bi bi-patch-check-fill"></i> Verified
+                                        </span>
+                                    </div>
+                                </div>
+                                <a th:href="@{'/gigs/' + ${gig.id}}" class="btn btn-outline-teal btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="py-5" id="how-it-works">
+            <div class="container py-4">
+                <div class="text-center mb-5">
+                    <span class="badge rounded-pill px-3 py-2 fw-semibold mb-2" style="background-color: var(--gc-teal-light); color: var(--gc-teal); border: 1px solid var(--gc-teal-border);">Simple & Direct</span>
+                    <h2 class="fw-bold text-navy">How GigCampus Works</h2>
+                    <p class="text-muted" style="max-width: 600px; margin: 0 auto;">A transparent, trusted pathway for college students and local businesses in Erode to collaborate.</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- For Students -->
+                    <div class="col-lg-6">
+                        <div class="form-card h-100 p-4 p-md-5">
+                            <div class="d-flex align-items-center gap-3 mb-4">
+                                <span class="badge rounded-pill px-3 py-1 fs-6 fw-bold" style="background: var(--gc-navy); color: #fff;">01</span>
+                                <h4 class="fw-bold mb-0 text-navy">For College Students</h4>
+                            </div>
+                            <div class="d-flex gap-3 mb-4">
+                                <div class="stat-icon bg-light text-primary" style="width: 44px; height: 44px; font-size: 1.25rem;"><i class="bi bi-mortarboard-fill"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-navy">1. Create Student Profile</h6>
+                                    <p class="text-muted small mb-0">Highlight your college (Kongu, Bannari, IRTT, etc.), degree, digital skills, and link your portfolio or GitHub.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 mb-4">
+                                <div class="stat-icon bg-light text-primary" style="width: 44px; height: 44px; font-size: 1.25rem;"><i class="bi bi-send-fill"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-navy">2. Apply with Custom Proposal</h6>
+                                    <p class="text-muted small mb-0">Submit your delivery timeline, proposed milestone budget, and pitch how you will solve the business's need.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <div class="stat-icon bg-light text-primary" style="width: 44px; height: 44px; font-size: 1.25rem;"><i class="bi bi-trophy-fill"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-navy">3. Deliver & Build Real Credibility</h6>
+                                    <p class="text-muted small mb-0">Complete work, get reviewed by genuine business owners, and add concrete project experience to your resume.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- For Businesses -->
+                    <div class="col-lg-6">
+                        <div class="form-card h-100 p-4 p-md-5">
+                            <div class="d-flex align-items-center gap-3 mb-4">
+                                <span class="badge rounded-pill px-3 py-1 fs-6 fw-bold" style="background: var(--gc-blue); color: #fff;">02</span>
+                                <h4 class="fw-bold mb-0 text-navy">For Erode MSMEs & Shops</h4>
+                            </div>
+                            <div class="d-flex gap-3 mb-4">
+                                <div class="stat-icon bg-light text-primary" style="width: 44px; height: 44px; font-size: 1.25rem;"><i class="bi bi-shop-window"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-navy">1. Post Your Requirements</h6>
+                                    <p class="text-muted small mb-0">Specify your budget, deadline, and task details (e.g. fabric catalog site, festival posters, GST inventory sheet).</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 mb-4">
+                                <div class="stat-icon bg-light text-primary" style="width: 44px; height: 44px; font-size: 1.25rem;"><i class="bi bi-people-fill"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-navy">2. Review Student Proposals</h6>
+                                    <p class="text-muted small mb-0">Review applicants, their college background, portfolios, chat in real-time, and accept the candidate that fits best.</p>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <div class="stat-icon bg-light text-primary" style="width: 44px; height: 44px; font-size: 1.25rem;"><i class="bi bi-check2-all"></i></div>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-navy">3. Receive Delivery & Settle Directly</h6>
+                                    <p class="text-muted small mb-0">Inspect the completed deliverables, mark project as completed, and leave an authentic review for the student.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local Campus & MSME Hubs Ticker -->
+                <div class="mt-5 p-4 rounded-4 bg-white border text-center shadow-xs">
+                    <span class="small fw-bold text-muted text-uppercase tracking-wider">Supported Colleges & Industrial Clusters in Erode</span>
+                    <div class="d-flex flex-wrap align-items-center justify-content-center gap-4 mt-3 text-secondary small fw-semibold">
+                        <span><i class="bi bi-mortarboard text-primary me-1"></i> Kongu Engineering College</span>
+                        <span><i class="bi bi-mortarboard text-primary me-1"></i> Bannari Amman Institute of Technology</span>
+                        <span><i class="bi bi-mortarboard text-primary me-1"></i> IRTT / GCE Erode</span>
+                        <span><i class="bi bi-mortarboard text-primary me-1"></i> Erode Arts & Science College</span>
+                        <span><i class="bi bi-mortarboard text-primary me-1"></i> Vellalar College</span>
+                        <span class="border-start ps-3"><i class="bi bi-buildings text-primary me-1"></i> Veerappanchatram Textile Market</span>
+                        <span><i class="bi bi-buildings text-primary me-1"></i> Perundurai SIPCOT</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="py-5 bg-white border-top">
+            <div class="container py-4">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6">
+                        <h2 class="fw-bold text-navy mb-4">Why Hyperlocal in Erode Matters</h2>
+                        <div class="d-flex gap-3 mb-4">
+                            <div class="p-2 bg-light rounded text-teal fs-4"><i class="bi bi-geo-alt-fill" style="color: var(--gc-teal);"></i></div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Local Language & Ground Context</h5>
+                                <p class="text-muted small mb-0">College students living in Erode understand local market dynamics, Tamil typography for posters, and real retail workflows.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 mb-4">
+                            <div class="p-2 bg-light rounded text-primary fs-4"><i class="bi bi-wallet2 text-primary"></i></div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Cost-Effective for Small Enterprises</h5>
+                                <p class="text-muted small mb-0">Agencies often charge tens of thousands for simple tasks. Students offer affordable services while gaining vital experience.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <div class="p-2 bg-light rounded text-success fs-4"><i class="bi bi-patch-check text-success"></i></div>
+                            <div>
+                                <h5 class="fw-bold mb-1">Accountable & Direct</h5>
+                                <p class="text-muted small mb-0">Verified local business profiles and authenticated student college profiles ensure transparency and mutual respect.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="p-4 p-lg-5 rounded-4 bg-dark text-white">
+                            <h3 class="fw-bold mb-3">Ready to post your first gig?</h3>
+                            <p class="text-secondary mb-4">
+                                Join local shops on Brough Road, Veerappanchatram, Perundurai, and surrounding clusters in Erode. It takes only 2 minutes to register.
+                            </p>
+                            <div class="d-flex flex-column flex-sm-row gap-3">
+                                <a th:href="@{/register/business}" class="btn btn-primary-gc">Post a Gig Today</a>
+                                <a th:href="@{/register/student}" class="btn btn-outline-light">Join as Student</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-5 bg-light">
+            <div class="container py-4">
+                <div class="text-center mb-5">
+                    <span class="badge bg-white text-muted border px-3 py-2 fw-semibold mb-2">Got Questions?</span>
+                    <h2 class="fw-bold">Frequently Asked Questions</h2>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="accordion shadow-sm" id="faqAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="faq1">
+                                    <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                        Who is eligible to register as a student?
+                                    </button>
+                                </h2>
+                                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-muted small">
+                                        Any enrolled student at a recognized college, polytechnic, or university in and around Erode (e.g. Kongu Engineering, BIT Sathyamangalam, IRTT, Erode Arts & Science, Vellalar, etc.) can register, build a profile, and apply for open gigs.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="faq2">
+                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                        How are payments handled in the MVP?
+                                    </button>
+                                </h2>
+                                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-muted small">
+                                        The proposed and agreed budgets are recorded within GigCampus to maintain clear milestone expectations. Actual financial settlements (via UPI, bank transfer, or cash on delivery) are handled directly between the business owner and the student. GigCampus does not hold funds or store credit card details in this initial release.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="faq3">
+                                    <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                        How does business verification work?
+                                    </button>
+                                </h2>
+                                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-muted small">
+                                        Businesses register with initial UNVERIFIED status. They can submit their GSTIN or shop establishment details from their profile. GigCampus administrators review these details before awarding a "Verified" badge to safeguard students.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>
